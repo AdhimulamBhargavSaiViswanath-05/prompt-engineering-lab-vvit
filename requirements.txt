@@ -1,0 +1,21 @@
+# Python 3.10+ recommended
+#
+# Install with:  pip install -r requirements.txt
+#
+# Experiments 1-10: Hugging Face text generation (distilgpt2)
+transformers>=4.40.0
+torch>=2.1.0
+
+# Experiments 11: LangChain Expression Language (LCEL) with a local Ollama model
+# (also requires the Ollama app: https://ollama.com, then `ollama pull llama3.2`)
+langchain-core>=0.3.0
+langchain-ollama>=0.2.0
+
+# Experiments 12-13: RAG (chunking, embeddings, vector store)
+numpy>=1.24.0
+tiktoken>=0.7.0
+sentence-transformers>=3.0.0
+
+# Experiments 13-16: OpenAI API (RAG chain, tool-calling agent, multimodal, evaluation)
+# Requires the OPENAI_API_KEY environment variable
+openai>=1.75.0
