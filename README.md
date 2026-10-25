@@ -21,10 +21,10 @@ Each experiment follows the same format: **Aim**, **Description**, **Code**.
 | 10 | Direct answer vs. zero-shot Chain-of-Thought vs. task decomposition | `distilgpt2` |
 | 11 | Simple LangChain Expression Language (LCEL) chain | LangChain + Ollama (`llama3.2`) |
 | 12 | RAG data indexing: chunking, embeddings, in-memory vector store | `tiktoken`, `all-MiniLM-L6-v2` |
-| 13 | Complete RAG chain: retrieval + answer generation | `all-MiniLM-L6-v2`, OpenAI `gpt-4o-mini` |
-| 14 | LLM agent with a calculator tool (function calling) | OpenAI `gpt-4.1-mini` |
-| 15 | Multimodal: image generation, captioning, prompt-caption alignment | OpenAI `gpt-image-1`, `gpt-4.1-mini` |
-| 16 | Prompt evaluation, LLM-as-a-judge, prompt-injection testing | OpenAI `gpt-4.1-mini` |
+| 13 | Complete RAG chain: retrieval + answer generation | `all-MiniLM-L6-v2`, Google Gemini (`gemini-flash-latest`) |
+| 14 | LLM agent with a calculator tool (function calling) | Google Gemini (`gemini-flash-latest`) |
+| 15 | Multimodal: image generation, captioning, prompt-caption alignment | Gemini image model (Nano Banana), `gemini-flash-latest` |
+| 16 | Prompt evaluation, LLM-as-a-judge, prompt-injection testing | Google Gemini (`gemini-flash-latest`) |
 
 ## What you need
 
@@ -33,7 +33,7 @@ Each experiment follows the same format: **Aim**, **Description**, **Code**.
 | 1-10 | Python packages only (`transformers`, `torch`). Models are downloaded automatically from Hugging Face. |
 | 11 | [Ollama](https://ollama.com) installed and running, with the model pulled: `ollama pull llama3.2` |
 | 12 | Python packages only (`sentence-transformers`, `tiktoken`) |
-| 13-16 | An OpenAI API key in the `OPENAI_API_KEY` environment variable. These experiments make paid API calls. |
+| 13-16 | A Google Gemini API key in the `GEMINI_API_KEY` environment variable. Get one at [Google AI Studio](https://aistudio.google.com/apikey). The free tier has rate limits, and image generation (Experiment 15) may need billing enabled. |
 
 Python 3.10 or newer is recommended.
 
@@ -51,7 +51,7 @@ source .venv/bin/activate          # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 pip install notebook               # or use VS Code / Cursor to open the .ipynb
 
-export OPENAI_API_KEY="your-key"   # Windows (PowerShell): $env:OPENAI_API_KEY="your-key"
+export GEMINI_API_KEY="your-key"   # Windows (PowerShell): $env:GEMINI_API_KEY="your-key"
 jupyter notebook
 ```
 
@@ -71,12 +71,12 @@ ollama serve        # skip if the Ollama app is already running
    !pip install -q -r https://raw.githubusercontent.com/AdhimulamBhargavSaiViswanath-05/prompt-engineering-lab-vvit/main/requirements.txt
    ```
 
-3. For Experiments 13-16, add your key in Colab **Secrets** (the key icon in the left sidebar) as `OPENAI_API_KEY`, then run:
+3. For Experiments 13-16, add your key in Colab **Secrets** (the key icon in the left sidebar) as `GEMINI_API_KEY`, then run:
 
    ```python
    import os
    from google.colab import userdata
-   os.environ["OPENAI_API_KEY"] = userdata.get("OPENAI_API_KEY")
+   os.environ["GEMINI_API_KEY"] = userdata.get("GEMINI_API_KEY")
    ```
 
 4. Experiment 11 needs a local Ollama server, which is not available on Colab by default. Run it locally, or install Ollama in the Colab runtime yourself.
@@ -87,6 +87,8 @@ A GPU runtime is optional. All experiments also work on CPU.
 
 - Experiments 1-10 use `distilgpt2`, a small base language model. It is not instruction-tuned, so it often repeats the prompt or ignores instructions. The experiments show *how prompt design changes the output*, so the absolute quality of the text is low.
 - Experiments 5-10 use greedy decoding (`do_sample=False`), so their outputs are repeatable. Experiments 1-4 sample randomly, so outputs differ on every run.
+- Experiments 13-16 use Gemini through its OpenAI-compatible endpoint, so the `openai` Python package is used with `base_url="https://generativelanguage.googleapis.com/v1beta/openai/"`.
+- Experiment 15: if image generation is not available for your key (for example, free-tier quota), place an image generated from the prompt as `generated_image.png` in this folder. The captioning and alignment steps then use that file.
 - Never commit your API key. Keep it in an environment variable or in Colab Secrets.
 
 ## Repository structure
@@ -95,6 +97,7 @@ A GPU runtime is optional. All experiments also work on CPU.
 .
 ├── PromptEngineering_IV_CSM_A_23BQ1A4201_Exps.ipynb   # All 16 experiments
 ├── requirements.txt                                   # Python dependencies
+├── generated_image.png                                # Image used by Experiment 15
 ├── README.md
 ├── LICENSE
 └── .gitignore
