@@ -5,6 +5,8 @@ Lab record for the **Prompt Engineering** course (IV year, CSM-A), Vasireddy Ven
 All 16 experiments are in a single notebook: [`PromptEngineering_IV_CSM_A_23BQ1A4201_Exps.ipynb`](PromptEngineering_IV_CSM_A_23BQ1A4201_Exps.ipynb).
 Each experiment follows the same format: **Aim**, **Description**, **Code**.
 
+The final lab record in the college format (border, header, footer, and per experiment: ExpNo, Aim, Description, Program, Output) is available as a PDF: [`pe_record_23BQ1A4201.pdf`](pe_record_23BQ1A4201.pdf) (54 pages). Its LaTeX source is in [`latex-record/`](latex-record/).
+
 ## Experiments
 
 | # | Topic | Model / Tools |
@@ -91,11 +93,26 @@ A GPU runtime is optional. All experiments also work on CPU.
 - Experiment 15: if image generation is not available for your key (for example, free-tier quota), place an image generated from the prompt as `generated_image.png` in this folder. The captioning and alignment steps then use that file.
 - Never commit your API key. Keep it in an environment variable or in Colab Secrets.
 
+## Rebuilding the PDF record
+
+The PDF is built from [`latex-record/main.tex`](latex-record/main.tex), which was generated from the notebook (code and outputs).
+
+1. Create a new blank project on [Overleaf](https://www.overleaf.com).
+2. Paste the contents of `latex-record/main.tex` into the project's `main.tex`.
+3. Upload `latex-record/generated_image.png` to the project root (needed for Experiment 15).
+4. Compile with **pdfLaTeX** (XeLaTeX also works) and download the PDF.
+
+You can change the roll number, batch text, and starting page number at the top of `main.tex` (`\regdno`, `\batchinfo`, `\startpage`).
+
 ## Repository structure
 
 ```
 .
 ├── PromptEngineering_IV_CSM_A_23BQ1A4201_Exps.ipynb   # All 16 experiments
+├── pe_record_23BQ1A4201.pdf                           # Final lab record (college format)
+├── latex-record/
+│   ├── main.tex                                       # LaTeX source of the record
+│   └── generated_image.png                            # Image used in the record (Experiment 15)
 ├── requirements.txt                                   # Python dependencies
 ├── generated_image.png                                # Image used by Experiment 15
 ├── README.md
